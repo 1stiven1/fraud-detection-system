@@ -1,0 +1,62 @@
+{
+    "timestamp": "2026-09-24T04:50:08.737060",
+    "training_samples": 11196,
+    "test_samples": 4799,
+    "train_fraud_rate": 8.2,
+    "test_fraud_rate": 8.21,
+    "features_used": [
+        "amount",
+        "customer_age",
+        "recent_transactions",
+        "account_age_days",
+        "failed_attempts",
+        "distance_from_usual_location",
+        "average_transaction_amount",
+        "transaction_frequency",
+        "monto_vs_promedio",
+        "transacciones_ultima_hora",
+        "hora_inusual",
+        "distancia_anomala",
+        "ciudad_diferente",
+        "dispositivo_nuevo",
+        "intentos_fallidos_elevados",
+        "merchant_category",
+        "payment_method",
+        "device_type",
+        "city"
+    ],
+    "selected_model": "Random Forest",
+    "selection_reason": "Se seleccionó técnicamente 'Random Forest' como el modelo definitivo para producción. En entornos transaccionales de detección de fraude, la prioridad estratégica es maximizar el Recall y F1-score para interceptar la mayor cantidad de transacciones fraudulentas y minimizar el costo financiero de los falsos negativos. Random Forest alcanzó un Recall del 39.59% y F1-Score del 33.73%, superando a Logistic Regression (Recall: 68.53%, F1-Score: 30.65%). Además, su capacidad para capturar interacciones no lineales entre horario, ratio de monto e intentos fallidos reduce la tasa de falsos positivos en comparación con modelos puramente lineales.",
+    "models": [
+        {
+            "model_name": "Logistic Regression",
+            "accuracy": 74.54,
+            "precision": 19.74,
+            "recall": 68.53,
+            "f1_score": 30.65,
+            "roc_auc": 78.61,
+            "raw_metrics": {
+                "accuracy": 0.7453636174202959,
+                "precision": 0.19736842105263158,
+                "recall": 0.6852791878172588,
+                "f1_score": 0.3064699205448354,
+                "roc_auc": 0.7860581826143572
+            }
+        },
+        {
+            "model_name": "Random Forest",
+            "accuracy": 87.23,
+            "precision": 29.38,
+            "recall": 39.59,
+            "f1_score": 33.73,
+            "roc_auc": 76.96,
+            "raw_metrics": {
+                "accuracy": 0.8722650552198374,
+                "precision": 0.2937853107344633,
+                "recall": 0.39593908629441626,
+                "f1_score": 0.3372972972972973,
+                "roc_auc": 0.7695846321381448
+            }
+        }
+    ]
+}

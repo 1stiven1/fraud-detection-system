@@ -1,0 +1,266 @@
+{
+    "model": "Random Forest",
+    "features": [
+        {
+            "feature": "monto_vs_promedio",
+            "importance": 0.1049,
+            "percentage": 10.49
+        },
+        {
+            "feature": "distance_from_usual_location",
+            "importance": 0.0929,
+            "percentage": 9.29
+        },
+        {
+            "feature": "failed_attempts",
+            "importance": 0.0834,
+            "percentage": 8.34
+        },
+        {
+            "feature": "amount",
+            "importance": 0.0715,
+            "percentage": 7.15
+        },
+        {
+            "feature": "average_transaction_amount",
+            "importance": 0.0652,
+            "percentage": 6.52
+        },
+        {
+            "feature": "account_age_days",
+            "importance": 0.0641,
+            "percentage": 6.41
+        },
+        {
+            "feature": "merchant_category",
+            "importance": 0.0633,
+            "percentage": 6.33
+        },
+        {
+            "feature": "transaction_frequency",
+            "importance": 0.0618,
+            "percentage": 6.18
+        },
+        {
+            "feature": "intentos_fallidos_elevados",
+            "importance": 0.0545,
+            "percentage": 5.45
+        },
+        {
+            "feature": "customer_age",
+            "importance": 0.0534,
+            "percentage": 5.34
+        },
+        {
+            "feature": "city",
+            "importance": 0.0446,
+            "percentage": 4.46
+        },
+        {
+            "feature": "hora_inusual",
+            "importance": 0.0421,
+            "percentage": 4.21
+        },
+        {
+            "feature": "payment_method",
+            "importance": 0.0395,
+            "percentage": 3.95
+        },
+        {
+            "feature": "device_type",
+            "importance": 0.0364,
+            "percentage": 3.64
+        },
+        {
+            "feature": "recent_transactions",
+            "importance": 0.0324,
+            "percentage": 3.24
+        },
+        {
+            "feature": "distancia_anomala",
+            "importance": 0.0319,
+            "percentage": 3.19
+        },
+        {
+            "feature": "transacciones_ultima_hora",
+            "importance": 0.0301,
+            "percentage": 3.01
+        },
+        {
+            "feature": "ciudad_diferente",
+            "importance": 0.0224,
+            "percentage": 2.24
+        },
+        {
+            "feature": "dispositivo_nuevo",
+            "importance": 0.0054,
+            "percentage": 0.54
+        }
+    ],
+    "raw_features": [
+        {
+            "name": "amount",
+            "importance": 0.07155
+        },
+        {
+            "name": "customer_age",
+            "importance": 0.05345
+        },
+        {
+            "name": "recent_transactions",
+            "importance": 0.0324
+        },
+        {
+            "name": "account_age_days",
+            "importance": 0.06405
+        },
+        {
+            "name": "failed_attempts",
+            "importance": 0.08344
+        },
+        {
+            "name": "distance_from_usual_location",
+            "importance": 0.0929
+        },
+        {
+            "name": "average_transaction_amount",
+            "importance": 0.06525
+        },
+        {
+            "name": "transaction_frequency",
+            "importance": 0.06183
+        },
+        {
+            "name": "monto_vs_promedio",
+            "importance": 0.10488
+        },
+        {
+            "name": "transacciones_ultima_hora",
+            "importance": 0.03013
+        },
+        {
+            "name": "hora_inusual",
+            "importance": 0.04209
+        },
+        {
+            "name": "distancia_anomala",
+            "importance": 0.03191
+        },
+        {
+            "name": "ciudad_diferente",
+            "importance": 0.02235
+        },
+        {
+            "name": "dispositivo_nuevo",
+            "importance": 0.00541
+        },
+        {
+            "name": "intentos_fallidos_elevados",
+            "importance": 0.05455
+        },
+        {
+            "name": "merchant_category_electronics",
+            "importance": 0.01707
+        },
+        {
+            "name": "merchant_category_entertainment",
+            "importance": 0.00728
+        },
+        {
+            "name": "merchant_category_financial_services",
+            "importance": 0.00556
+        },
+        {
+            "name": "merchant_category_gambling",
+            "importance": 0.00302
+        },
+        {
+            "name": "merchant_category_restaurants",
+            "importance": 0.00655
+        },
+        {
+            "name": "merchant_category_retail",
+            "importance": 0.00829
+        },
+        {
+            "name": "merchant_category_supermarket",
+            "importance": 0.0087
+        },
+        {
+            "name": "merchant_category_travel",
+            "importance": 0.00686
+        },
+        {
+            "name": "payment_method_bank_transfer",
+            "importance": 0.00693
+        },
+        {
+            "name": "payment_method_credit_card",
+            "importance": 0.00947
+        },
+        {
+            "name": "payment_method_crypto",
+            "importance": 0.00945
+        },
+        {
+            "name": "payment_method_debit_card",
+            "importance": 0.00873
+        },
+        {
+            "name": "payment_method_virtual_wallet",
+            "importance": 0.00491
+        },
+        {
+            "name": "device_type_mobile_android",
+            "importance": 0.00954
+        },
+        {
+            "name": "device_type_mobile_ios",
+            "importance": 0.0094
+        },
+        {
+            "name": "device_type_unknown",
+            "importance": 0.0059
+        },
+        {
+            "name": "device_type_web_chrome",
+            "importance": 0.00638
+        },
+        {
+            "name": "device_type_web_safari",
+            "importance": 0.0052
+        },
+        {
+            "name": "city_barranquilla",
+            "importance": 0.00513
+        },
+        {
+            "name": "city_bogota",
+            "importance": 0.01028
+        },
+        {
+            "name": "city_bucaramanga",
+            "importance": 0.00395
+        },
+        {
+            "name": "city_cali",
+            "importance": 0.00542
+        },
+        {
+            "name": "city_cartagena",
+            "importance": 0.00469
+        },
+        {
+            "name": "city_medellin",
+            "importance": 0.00664
+        },
+        {
+            "name": "city_pereira",
+            "importance": 0.00491
+        },
+        {
+            "name": "city_santa marta",
+            "importance": 0.00357
+        }
+    ]
+}

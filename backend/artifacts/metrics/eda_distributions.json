@@ -1,0 +1,459 @@
+{
+    "summary": {
+        "total_transactions": 15995,
+        "total_fraud": 1312,
+        "total_legitimate": 14683,
+        "base_fraud_rate": 8.2,
+        "average_amount": 181.86,
+        "median_amount": 113.93,
+        "max_amount": 1993.13
+    },
+    "fraud_distribution": [
+        {
+            "name": "No Fraude (Legítimas)",
+            "count": 14683,
+            "percentage": 91.8
+        },
+        {
+            "name": "Fraude Confirmado",
+            "count": 1312,
+            "percentage": 8.2
+        }
+    ],
+    "fraud_by_hour": [
+        {
+            "hour": 0,
+            "hour_label": "00:00",
+            "total_transactions": 67,
+            "fraud_count": 12,
+            "fraud_rate": 17.91
+        },
+        {
+            "hour": 1,
+            "hour_label": "01:00",
+            "total_transactions": 51,
+            "fraud_count": 11,
+            "fraud_rate": 21.57
+        },
+        {
+            "hour": 2,
+            "hour_label": "02:00",
+            "total_transactions": 89,
+            "fraud_count": 19,
+            "fraud_rate": 21.35
+        },
+        {
+            "hour": 3,
+            "hour_label": "03:00",
+            "total_transactions": 142,
+            "fraud_count": 31,
+            "fraud_rate": 21.83
+        },
+        {
+            "hour": 4,
+            "hour_label": "04:00",
+            "total_transactions": 230,
+            "fraud_count": 59,
+            "fraud_rate": 25.65
+        },
+        {
+            "hour": 5,
+            "hour_label": "05:00",
+            "total_transactions": 324,
+            "fraud_count": 65,
+            "fraud_rate": 20.06
+        },
+        {
+            "hour": 6,
+            "hour_label": "06:00",
+            "total_transactions": 385,
+            "fraud_count": 30,
+            "fraud_rate": 7.79
+        },
+        {
+            "hour": 7,
+            "hour_label": "07:00",
+            "total_transactions": 577,
+            "fraud_count": 44,
+            "fraud_rate": 7.63
+        },
+        {
+            "hour": 8,
+            "hour_label": "08:00",
+            "total_transactions": 688,
+            "fraud_count": 61,
+            "fraud_rate": 8.87
+        },
+        {
+            "hour": 9,
+            "hour_label": "09:00",
+            "total_transactions": 781,
+            "fraud_count": 55,
+            "fraud_rate": 7.04
+        },
+        {
+            "hour": 10,
+            "hour_label": "10:00",
+            "total_transactions": 984,
+            "fraud_count": 76,
+            "fraud_rate": 7.72
+        },
+        {
+            "hour": 11,
+            "hour_label": "11:00",
+            "total_transactions": 1095,
+            "fraud_count": 82,
+            "fraud_rate": 7.49
+        },
+        {
+            "hour": 12,
+            "hour_label": "12:00",
+            "total_transactions": 1226,
+            "fraud_count": 79,
+            "fraud_rate": 6.44
+        },
+        {
+            "hour": 13,
+            "hour_label": "13:00",
+            "total_transactions": 1352,
+            "fraud_count": 96,
+            "fraud_rate": 7.1
+        },
+        {
+            "hour": 14,
+            "hour_label": "14:00",
+            "total_transactions": 1292,
+            "fraud_count": 99,
+            "fraud_rate": 7.66
+        },
+        {
+            "hour": 15,
+            "hour_label": "15:00",
+            "total_transactions": 1208,
+            "fraud_count": 97,
+            "fraud_rate": 8.03
+        },
+        {
+            "hour": 16,
+            "hour_label": "16:00",
+            "total_transactions": 1214,
+            "fraud_count": 73,
+            "fraud_rate": 6.01
+        },
+        {
+            "hour": 17,
+            "hour_label": "17:00",
+            "total_transactions": 1011,
+            "fraud_count": 83,
+            "fraud_rate": 8.21
+        },
+        {
+            "hour": 18,
+            "hour_label": "18:00",
+            "total_transactions": 804,
+            "fraud_count": 45,
+            "fraud_rate": 5.6
+        },
+        {
+            "hour": 19,
+            "hour_label": "19:00",
+            "total_transactions": 686,
+            "fraud_count": 45,
+            "fraud_rate": 6.56
+        },
+        {
+            "hour": 20,
+            "hour_label": "20:00",
+            "total_transactions": 561,
+            "fraud_count": 45,
+            "fraud_rate": 8.02
+        },
+        {
+            "hour": 21,
+            "hour_label": "21:00",
+            "total_transactions": 392,
+            "fraud_count": 33,
+            "fraud_rate": 8.42
+        },
+        {
+            "hour": 22,
+            "hour_label": "22:00",
+            "total_transactions": 286,
+            "fraud_count": 31,
+            "fraud_rate": 10.84
+        },
+        {
+            "hour": 23,
+            "hour_label": "23:00",
+            "total_transactions": 550,
+            "fraud_count": 41,
+            "fraud_rate": 7.45
+        }
+    ],
+    "fraud_by_city": [
+        {
+            "city": "Santa Marta",
+            "total_transactions": 798,
+            "fraud_count": 95,
+            "fraud_rate": 11.9
+        },
+        {
+            "city": "Bucaramanga",
+            "total_transactions": 1098,
+            "fraud_count": 108,
+            "fraud_rate": 9.84
+        },
+        {
+            "city": "Cartagena",
+            "total_transactions": 1283,
+            "fraud_count": 116,
+            "fraud_rate": 9.04
+        },
+        {
+            "city": "Cali",
+            "total_transactions": 1873,
+            "fraud_count": 165,
+            "fraud_rate": 8.81
+        },
+        {
+            "city": "Pereira",
+            "total_transactions": 1030,
+            "fraud_count": 86,
+            "fraud_rate": 8.35
+        },
+        {
+            "city": "Barranquilla",
+            "total_transactions": 1584,
+            "fraud_count": 132,
+            "fraud_rate": 8.33
+        },
+        {
+            "city": "Medellin",
+            "total_transactions": 2965,
+            "fraud_count": 222,
+            "fraud_rate": 7.49
+        },
+        {
+            "city": "Bogota",
+            "total_transactions": 5364,
+            "fraud_count": 388,
+            "fraud_rate": 7.23
+        }
+    ],
+    "fraud_by_category": [
+        {
+            "category": "Electronics",
+            "total_transactions": 2467,
+            "fraud_count": 301,
+            "fraud_rate": 12.2
+        },
+        {
+            "category": "Gambling",
+            "total_transactions": 332,
+            "fraud_count": 36,
+            "fraud_rate": 10.84
+        },
+        {
+            "category": "Travel",
+            "total_transactions": 1241,
+            "fraud_count": 133,
+            "fraud_rate": 10.72
+        },
+        {
+            "category": "Retail",
+            "total_transactions": 4057,
+            "fraud_count": 309,
+            "fraud_rate": 7.62
+        },
+        {
+            "category": "Entertainment",
+            "total_transactions": 1602,
+            "fraud_count": 117,
+            "fraud_rate": 7.3
+        },
+        {
+            "category": "Supermarket",
+            "total_transactions": 3438,
+            "fraud_count": 249,
+            "fraud_rate": 7.24
+        },
+        {
+            "category": "Financial Services",
+            "total_transactions": 967,
+            "fraud_count": 63,
+            "fraud_rate": 6.51
+        },
+        {
+            "category": "Restaurants",
+            "total_transactions": 1891,
+            "fraud_count": 104,
+            "fraud_rate": 5.5
+        }
+    ],
+    "fraud_by_payment": [
+        {
+            "payment_method": "Crypto",
+            "total_transactions": 590,
+            "fraud_count": 99,
+            "fraud_rate": 16.78
+        },
+        {
+            "payment_method": "Virtual Wallet",
+            "total_transactions": 1736,
+            "fraud_count": 144,
+            "fraud_rate": 8.29
+        },
+        {
+            "payment_method": "Debit Card",
+            "total_transactions": 5230,
+            "fraud_count": 429,
+            "fraud_rate": 8.2
+        },
+        {
+            "payment_method": "Credit Card",
+            "total_transactions": 5889,
+            "fraud_count": 447,
+            "fraud_rate": 7.59
+        },
+        {
+            "payment_method": "Bank Transfer",
+            "total_transactions": 2550,
+            "fraud_count": 193,
+            "fraud_rate": 7.57
+        }
+    ],
+    "fraud_by_device": [
+        {
+            "device_type": "Unknown",
+            "total_transactions": 675,
+            "fraud_count": 100,
+            "fraud_rate": 14.81
+        },
+        {
+            "device_type": "Web Safari",
+            "total_transactions": 1470,
+            "fraud_count": 128,
+            "fraud_rate": 8.71
+        },
+        {
+            "device_type": "Web Chrome",
+            "total_transactions": 2076,
+            "fraud_count": 174,
+            "fraud_rate": 8.38
+        },
+        {
+            "device_type": "Mobile Android",
+            "total_transactions": 6529,
+            "fraud_count": 506,
+            "fraud_rate": 7.75
+        },
+        {
+            "device_type": "Mobile Ios",
+            "total_transactions": 5245,
+            "fraud_count": 404,
+            "fraud_rate": 7.7
+        }
+    ],
+    "amount_distribution": [
+        {
+            "range": "$0 - $50",
+            "count": 3120,
+            "fraud_count": 226,
+            "fraud_rate": 7.24
+        },
+        {
+            "range": "$50 - $150",
+            "count": 6600,
+            "fraud_count": 518,
+            "fraud_rate": 7.85
+        },
+        {
+            "range": "$150 - $300",
+            "count": 3633,
+            "fraud_count": 277,
+            "fraud_rate": 7.62
+        },
+        {
+            "range": "$300 - $600",
+            "count": 1936,
+            "fraud_count": 207,
+            "fraud_rate": 10.69
+        },
+        {
+            "range": "$600 - $1,500",
+            "count": 657,
+            "fraud_count": 77,
+            "fraud_rate": 11.72
+        },
+        {
+            "range": "> $1,500",
+            "count": 49,
+            "fraud_count": 7,
+            "fraud_rate": 14.29
+        }
+    ],
+    "distance_distribution": [
+        {
+            "range": "0 - 20 km",
+            "count": 12930,
+            "fraud_count": 850,
+            "fraud_rate": 6.57
+        },
+        {
+            "range": "20 - 50 km",
+            "count": 1126,
+            "fraud_count": 86,
+            "fraud_rate": 7.64
+        },
+        {
+            "range": "50 - 150 km",
+            "count": 119,
+            "fraud_count": 12,
+            "fraud_rate": 10.08
+        },
+        {
+            "range": "150 - 300 km",
+            "count": 401,
+            "fraud_count": 65,
+            "fraud_rate": 16.21
+        },
+        {
+            "range": "> 300 km",
+            "count": 1419,
+            "fraud_count": 299,
+            "fraud_rate": 21.07
+        }
+    ],
+    "failed_attempts_distribution": [
+        {
+            "attempts": 0,
+            "count": 13116,
+            "fraud_count": 764,
+            "fraud_rate": 5.82
+        },
+        {
+            "attempts": 1,
+            "count": 1758,
+            "fraud_count": 228,
+            "fraud_rate": 12.97
+        },
+        {
+            "attempts": 2,
+            "count": 622,
+            "fraud_count": 151,
+            "fraud_rate": 24.28
+        },
+        {
+            "attempts": 3,
+            "count": 325,
+            "fraud_count": 118,
+            "fraud_rate": 36.31
+        },
+        {
+            "attempts": 4,
+            "count": 174,
+            "fraud_count": 51,
+            "fraud_rate": 29.31
+        }
+    ]
+}

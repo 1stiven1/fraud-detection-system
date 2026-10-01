@@ -1,0 +1,45 @@
+{
+    "status": "success",
+    "before": {
+        "records": 16030,
+        "columns": 18,
+        "total_nulls": 321,
+        "nulls_by_column": {
+            "city": 129,
+            "device_type": 192
+        },
+        "duplicate_rows": 29,
+        "invalid_negative_amounts": 6,
+        "outliers_detected": {
+            "amount": 1196,
+            "distance": 2107
+        }
+    },
+    "after": {
+        "records": 15995,
+        "columns": 18,
+        "total_nulls": 0,
+        "nulls_by_column": {},
+        "duplicate_rows": 0,
+        "invalid_negative_amounts": 0,
+        "outliers_detected": {
+            "amount": 1190,
+            "distance": 2104
+        }
+    },
+    "transformations_applied": [
+        "Eliminación de 29 filas duplicadas exactas.",
+        "Filtrado de 6 transacciones con montos nulos o negativos.",
+        "Normalización sintáctica a minúsculas y recorte de espacios en variables de texto.",
+        "Imputación de 128 ciudades nulas usando la ciudad habitual del cliente.",
+        "Imputación de 192 tipos de dispositivo nulos con categoría 'unknown'.",
+        "Validación y parseo ISO-8601 de campos de fecha y hora.",
+        "Winsorización/Capping superior en percentil 99.9 ($ 1,993.13) a 16 transacciones con montos desproporcionados."
+    ],
+    "summary": {
+        "records_removed": 35,
+        "nulls_resolved": 321,
+        "duplicates_removed": 29,
+        "data_health_score": 99.78
+    }
+}
