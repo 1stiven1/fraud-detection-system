@@ -19,9 +19,12 @@ class Settings(BaseModel):
     REC_MEDIO: str = "Solicitar validación adicional antes de completar la operación."
     REC_ALTO: str = "Bloquear temporalmente y solicitar validación de identidad"
 
-    # Rutas de artefactos y datos
+    # Configuración de la base de datos PostgreSQL
     BASE_DIR: str = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-    DATABASE_URL: str = f"sqlite:///{os.path.join(BASE_DIR, 'fraud_guard.db')}"
+    DATABASE_URL: str = os.getenv(
+        "DATABASE_URL",
+        "postgresql://postgres:12345@localhost:5432/fraudguard_db"
+    )
 
     RAW_DATA_PATH: str = os.path.join(BASE_DIR, "data", "raw", "transactions_raw.csv")
     PROCESSED_DATA_PATH: str = os.path.join(BASE_DIR, "data", "processed", "transactions_processed.csv")
