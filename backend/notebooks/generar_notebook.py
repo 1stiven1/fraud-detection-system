@@ -1,6 +1,6 @@
 """
 Generador del Notebook Académico Completo y Ejecutable.
-notebooks/fraud_detection_analysis.ipynb
+notebooks/analisis_fraude.ipynb
 """
 
 import nbformat as nbf
@@ -11,7 +11,7 @@ cells = []
 
 # 1. Introducción
 cells.append(nbf.v4.new_markdown_cell("""# Proyecto Académico de Minería de Datos: Detección y Prevención de Fraude en Transacciones Digitales
-**Sistema:** FraudGuard AI  
+**Sistema:** FraudGuard
 **Asignatura:** Minería de Datos y Aprendizaje Automático  
 **Equipo Senior:** Ingeniero de Datos, Científico de Datos en Fraude, Ingeniero ML, Desarrollador Backend Python, Desarrollador Frontend, Diseñador UX/UI, Ingeniero DevOps.
 
@@ -380,7 +380,7 @@ cells.append(nbf.v4.new_markdown_cell("""## 14. Conclusiones y Recomendaciones
 
 nb["cells"] = cells
 
-with open("fraud_detection_analysis.ipynb", "w", encoding="utf-8") as f:
+with open("analisis_fraude.ipynb", "w", encoding="utf-8") as f:
     nbf.write(nb, f)
 
-print("[OK] Notebook academico fraud_detection_analysis.ipynb generado con exito!")
+print("[OK] Notebook académico analisis_fraude.ipynb generado con éxito!")

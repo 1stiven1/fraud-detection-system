@@ -43,7 +43,7 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, onRefreshData }) => 
   };
 
   const currentInfo = titles[currentTab] || {
-    title: 'FraudGuard AI',
+    title: 'FraudGuard',
     subtitle: 'Sistema de Minería de Datos para Detección de Fraude Transaccional',
   };
 

@@ -1,17 +1,17 @@
 # MANUAL COMPLETO DE FUNCIONAMIENTO Y ARQUITECTURA
-## Sistema de Detección de Fraude en Transacciones Digitales — FraudGuard AI
+## Sistema de Detección de Fraude en Transacciones Digitales — FraudGuard
 
 ---
 
 ## 1. INTRODUCCIÓN Y PROPÓSITO DEL SISTEMA
 
-**FraudGuard AI** es un sistema web académico y empresarial de Minería de Datos y Machine Learning desarrollado para la detección, clasificación y explicabilidad de transacciones electrónicas sospechosas en tiempo real.
+**FraudGuard** es un sistema web académico y empresarial de Minería de Datos y Machine Learning desarrollado para la detección, clasificación y explicabilidad de transacciones electrónicas sospechosas en tiempo real.
 
 ### El Problema Financiero
 En una pasarela de pagos digitales, las compras no autorizadas (fraudes) generan contracargos bancarios (*chargebacks*), pérdidas económicas directas y sanciones regulatorias. Sin embargo, utilizar reglas estáticas rígidas bloquea compras de clientes legítimos (falsos positivos). 
 
-### La Solución de FraudGuard AI
-FraudGuard AI reemplaza las reglas fijas con un **modelo de aprendizaje automático supervisado (Random Forest)** respaldado por un pipeline completo de minería de datos que:
+### La Solución de FraudGuard
+FraudGuard reemplaza las reglas fijas con un **modelo de aprendizaje automático supervisado (Random Forest)** respaldado por un pipeline completo de minería de datos que:
 1. Evalúa transacciones en **sub-segundos (< 10 ms)**.
 2. Devuelve una **probabilidad continua de fraude (0% a 100%)**.
 3. Clasifica la operación en niveles de riesgo **BAJO**, **MEDIO** o **ALTO**.
@@ -35,7 +35,7 @@ El sistema utiliza una arquitectura desacoplada en tres capas principales:
      ├── 2. Feature Engineering (Cálculo de variables derivadas)
      ├── 3. Pipeline ML Scikit-Learn (ColumnTransformer + Random Forest)
      ├── 4. Servicio de Riesgo (risk_service.py - Asignación de nivel y recomendación)
-     ├── 5. Motor de Explicabilidad (explain.py - Factores factuales)
+     ├── 5. Motor de Explicabilidad (explicacion.py - Factores factuales)
      └── 6. Persistencia ORM (SQLAlchemy -> predictions)
                          │
                          ▼
@@ -46,13 +46,13 @@ El sistema utiliza una arquitectura desacoplada en tres capas principales:
 
 ## 3. CICLO DE VIDA Y FLUJO DE DATOS (DATA LIFECYCLE)
 
-### 3.1 Generación del Dataset Sintético Realista (`backend/ml/generate_data.py`)
+### 3.1 Generación del Dataset Sintético Realista (`backend/ml/generar_datos.py`)
 - Se parten de **16,030 registros brutos** generados bajo la semilla pseudoaleatoria `42` para garantizar reproducibilidad.
 - Incluye 18 atributos con patrones estadísticos reales de gasto, comportamiento temporal, geoespacial y anomalías de seguridad.
 - Tasa empírica de fraude base: **8.20%**.
 - Se inyectaron intencionalmente 30 filas duplicadas, 5 montos negativos/nulos y 321 valores faltantes para auditar la etapa de limpieza.
 
-### 3.2 Limpieza y Calidad de Datos (`backend/ml/preprocessing.py`)
+### 3.2 Limpieza y Calidad de Datos (`backend/ml/preprocesamiento.py`)
 El pipeline procesa el dataset bruto generando métricas cuantitativas **ANTES vs DESPUÉS**:
 
 | Métrica | Antes (RAW) | Después (PROCESSED) | Solución Técnica |
@@ -67,7 +67,7 @@ El pipeline procesa el dataset bruto generando métricas cuantitativas **ANTES v
 
 ---
 
-### 3.3 Ingeniería de Características (`backend/ml/feature_engineering.py`)
+### 3.3 Ingeniería de Características (`backend/ml/ingenieria_caracteristicas.py`)
 Para mejorar la separabilidad de las clases sin caer en overfitting, se construyen 6 variables derivadas clave:
 
 1. `monto_vs_promedio`: Ratio matemático $\frac{\text{amount}}{\text{average\_transaction\_amount} + \epsilon}$. (Predictor #1 en el ranking de importancia).
@@ -79,7 +79,7 @@ Para mejorar la separabilidad de las clases sin caer en overfitting, se construy
 
 ---
 
-### 3.4 Análisis Exploratorio (EDA) y Hallazgos Estadísticos (`backend/ml/eda.py`)
+### 3.4 Análisis Exploratorio (EDA) y Hallazgos Estadísticos (`backend/ml/analisis_exploratorio.py`)
 El sistema extrae automáticamente 5 hallazgos estadísticos sustentados en los datos procesados:
 
 1. **Horario de Madrugada:** Operaciones entre 00:00 y 05:59 hrs tienen una tasa de fraude de **18.74%**, frente al **6.22%** diurno (**3.01x** más riesgo).
@@ -92,7 +92,7 @@ El sistema extrae automáticamente 5 hallazgos estadísticos sustentados en los 
 
 ## 4. MODELADO DE MACHINE LEARNING Y EVALUACIÓN
 
-### 4.1 Partición Estratificada y Prevención de Data Leakage (`backend/ml/train.py`)
+### 4.1 Partición Estratificada y Prevención de Data Leakage (`backend/ml/entrenar.py`)
 - **División:** 70% entrenamiento (11,196 muestras) y 30% prueba (4,799 muestras), preservando la proporción de fraude mediante `stratify=y`.
 - **ColumnTransformer:** El escalador de variables numéricas (`StandardScaler`) y la codificación categórica (`OneHotEncoder`) se ajustan **únicamente sobre el conjunto de entrenamiento**, evitando que información del test set contamine el estimador.
 
@@ -127,7 +127,7 @@ El servicio `backend/app/services/risk_service.py` aplica umbrales centralizados
 
 ## 6. MOTOR DE EXPLICABILIDAD DINÁMICA EN TIEMPO REAL
 
-Cuando una transacción es analizada, el módulo `backend/ml/explain.py` contrasta los atributos ingresados contra la línea base del cliente y los pesos del ensamble.
+Cuando una transacción es analizada, el módulo `backend/ml/explicacion.py` contrasta los atributos ingresados contra la línea base del cliente y los pesos del ensamble.
 
 Para cada factor clave se genera un objeto explicativo real con:
 - **Variable y Etiqueta Comercial** (ej. *"Monto Crítico vs Promedio"*).

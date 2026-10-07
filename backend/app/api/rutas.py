@@ -1,5 +1,5 @@
 """
-Rutas API REST de FastAPI para FraudGuard AI.
+Rutas API REST de FastAPI para FraudGuard.
 """
 
 import os

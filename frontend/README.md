@@ -1,4 +1,4 @@
-# FraudGuard AI — Frontend (React + TypeScript + Vite)
+# FraudGuard — Frontend (React + TypeScript + Vite)
 
 Interfaz de usuario empresarial desarrollada en React 19, TypeScript, Vite, Tailwind CSS y Recharts para la visualización y análisis de fraude.
 

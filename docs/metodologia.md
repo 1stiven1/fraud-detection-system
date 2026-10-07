@@ -1,7 +1,7 @@
-# Metodología de Minería de Datos — FraudGuard AI
+# Metodología de Minería de Datos — FraudGuard
 
 ## 1. Marco Metodológico: CRISP-DM Adaptado
-El proyecto **FraudGuard AI** implementa el estándar metodológico internacional **CRISP-DM** (*Cross-Industry Standard Process for Data Mining*), estructurado en seis fases iterativas diseñadas específicamente para problemas de detección de anomalías y prevención de fraude financiero.
+El proyecto **FraudGuard** implementa el estándar metodológico internacional **CRISP-DM** (*Cross-Industry Standard Process for Data Mining*), estructurado en seis fases iterativas diseñadas específicamente para problemas de detección de anomalías y prevención de fraude financiero.
 
 ```
        ┌────────────────────────┐

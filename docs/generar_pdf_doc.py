@@ -1,5 +1,5 @@
 """
-Generador de Documento PDF Explicativo del Código del Proyecto FraudGuard AI.
+Generador de Documento PDF Explicativo del Código del Proyecto FraudGuard.
 Utiliza ReportLab para compilar un documento PDF estructurado y elegante.
 """
 
@@ -13,7 +13,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 
 def build_pdf():
-    pdf_filename = os.path.join(os.path.dirname(__file__), "Manual_de_Codigo_FraudGuard_AI.pdf")
+    pdf_filename = os.path.join(os.path.dirname(__file__), "Manual_de_Codigo_FraudGuard.pdf")
     doc = SimpleDocTemplate(
         pdf_filename,
         pagesize=letter,
@@ -109,14 +109,14 @@ def build_pdf():
     story = []
 
     # Title Banner
-    story.append(Paragraph("FraudGuard AI — Manual Explicativo del Código", title_style))
+    story.append(Paragraph("FraudGuard — Manual Explicativo del Código", title_style))
     story.append(Paragraph("Documentación Técnica Exhaustiva y Función de Cada Archivo del Proyecto<br/><b>Conexión PostgreSQL Verificada | Inferencia ML | Explicabilidad | Frontend React</b>", subtitle_style))
     story.append(HRFlowable(width="100%", thickness=1.5, color=colors.HexColor('#4f46e5'), spaceAfter=15))
 
     # Section 1: Resumen General
     story.append(Paragraph("1. Introducción y Arquitectura del Sistema", heading1_style))
     story.append(Paragraph(
-        "El proyecto <b>FraudGuard AI</b> es una solución web integral de Minería de Datos y Aprendizaje Automático diseñada para la detección, clasificación y explicabilidad de transacciones fraudulentas en tiempo real. La arquitectura está dividida en tres módulos principales:",
+        "El proyecto <b>FraudGuard</b> es una solución web integral de Minería de Datos y Aprendizaje Automático diseñada para la detección, clasificación y explicabilidad de transacciones fraudulentas en tiempo real. La arquitectura está dividida en tres módulos principales:",
         body_style
     ))
     story.append(Paragraph("• <b>Backend API (Python 3.13 / FastAPI):</b> Procesa las solicitudes HTTP REST, valida entradas con Pydantic, ejecuta ingeniería de características, aplica el pipeline de Scikit-Learn (Random Forest) y persiste en PostgreSQL.", bullet_style))
@@ -149,13 +149,13 @@ def build_pdf():
     story.append(Paragraph("3. Módulo de Machine Learning y Pipeline (`backend/ml/`)", heading1_style))
 
     files_ml = [
-        ("ml/generate_data.py", "Generador de dataset sintético realista con 16,030 registros bajo la semilla 42. Modela comportamientos de gasto, horarios, distancias y patrones de fraude con ruido estocástico. Inyecta deliberadamente duplicados, nulos y montos inválidos para evaluar la etapa de limpieza."),
-        ("ml/preprocessing.py", "Pipeline de depuración de datos. Elimina filas duplicadas, descarta montos <= $0, imputa ciudades y dispositivos nulos con lógica contextual, aplica normalización sintáctica y realiza capping superior en el percentil 99.9. Genera el reporte ANTES vs DESPUÉS (`data_quality.json`)."),
-        ("ml/feature_engineering.py", "Extractor de 6 variables derivadas con alto poder discriminante: `monto_vs_promedio` (ratio de gasto), `hora_inusual` (madrugadas 00:00-05:59), `distancia_anomala` (>100 km), `ciudad_diferente`, `intentos_fallidos_elevados` (>=2) y `dispositivo_nuevo`."),
-        ("ml/train.py", "Módulo de entrenamiento. Divide los datos en 70% train / 30% test estratificado por `is_fraud`. Construye un `ColumnTransformer` (StandardScaler + OneHotEncoder) ajustado únicamente sobre train para prevenir Data Leakage. Entrena Logistic Regression y Random Forest, seleccionando técnicamente este último por F1-Score y Recall."),
-        ("ml/predict.py", "Motor de inferencia en tiempo real. Carga y cachea en memoria el modelo entrenado (`fraud_model.joblib`), ejecuta la ingeniería de características sobre una sola transacción y calcula `predict_proba()`."),
-        ("ml/eda.py", "Calculador automático de distribuciones multivariables y extractor de los 5 hallazgos estadísticos demostrados con evidencia cuantitativa e interpretación pericial de negocio (`eda_findings.json`)."),
-        ("ml/explain.py", "Motor de explicabilidad dinámica en tiempo real. Evalúa los datos reales de la transacción contra el perfil histórico del usuario y los pesos del modelo, generando los 5 factores principales con etiqueta, impacto (ALTO/MEDIO/BAJO) y frase explicativa sin textos estáticos.")
+        ("ml/generar_datos.py", "Generador de dataset sintético realista con 16,030 registros bajo la semilla 42. Modela comportamientos de gasto, horarios, distancias y patrones de fraude con ruido estocástico. Inyecta deliberadamente duplicados, nulos y montos inválidos para evaluar la etapa de limpieza."),
+        ("ml/preprocesamiento.py", "Pipeline de depuración de datos. Elimina filas duplicadas, descarta montos <= $0, imputa ciudades y dispositivos nulos con lógica contextual, aplica normalización sintáctica y realiza capping superior en el percentil 99.9. Genera el reporte ANTES vs DESPUÉS (`calidad_datos.json`)."),
+        ("ml/ingenieria_caracteristicas.py", "Extractor de 6 variables derivadas con alto poder discriminante: `monto_vs_promedio` (ratio de gasto), `hora_inusual` (madrugadas 00:00-05:59), `distancia_anomala` (>100 km), `ciudad_diferente`, `intentos_fallidos_elevados` (>=2) y `dispositivo_nuevo`."),
+        ("ml/entrenar.py", "Módulo de entrenamiento. Divide los datos en 70% train / 30% test estratificado por `is_fraud`. Construye un `ColumnTransformer` (StandardScaler + OneHotEncoder) ajustado únicamente sobre train para prevenir Data Leakage. Entrena Logistic Regression y Random Forest, seleccionando técnicamente este último por F1-Score y Recall."),
+        ("ml/predecir.py", "Motor de inferencia en tiempo real. Carga y cachea en memoria el modelo entrenado (`modelo_fraude.joblib`), ejecuta la ingeniería de características sobre una sola transacción y calcula `predict_proba()`."),
+        ("ml/analisis_exploratorio.py", "Calculador automático de distribuciones multivariables y extractor de los 5 hallazgos estadísticos demostrados con evidencia cuantitativa e interpretación pericial de negocio (`hallazgos_eda.json`)."),
+        ("ml/explicacion.py", "Motor de explicabilidad dinámica en tiempo real. Evalúa los datos reales de la transacción contra el perfil histórico del usuario y los pesos del modelo, generando los 5 factores principales con etiqueta, impacto (ALTO/MEDIO/BAJO) y frase explicativa sin textos estáticos.")
     ]
 
     for filename, desc in files_ml:
@@ -197,7 +197,7 @@ def build_pdf():
         ("docs/metodologia.md", "Documento formal del marco metodológico CRISP-DM adaptado a minería de datos financiera."),
         ("docs/hallazgos.md", "Sustentación pericial de los 5 hallazgos estadísticos descubiertos en los datos reales."),
         ("docs/manual_funcionamiento.md", "Manual explicativo de funcionamiento operativo y flujo de extremo a extremo."),
-        ("backend/notebooks/fraud_detection_analysis.ipynb", "Jupyter Notebook ejecutable de principio a fin con celdas de código, visualizaciones y conclusiones."),
+        ("backend/notebooks/analisis_fraude.ipynb", "Jupyter Notebook ejecutable de principio a fin con celdas de código, visualizaciones y conclusiones."),
         ("backend/test_postgres.py", "Script de verificación automatizada que comprueba la conexión a PostgreSQL con usuario `postgres` y clave `12345`, creando la base de datos `fraudguard_db` si no existe."),
         ("backend/test_api.py", "Suite de pruebas de integración de endpoints REST con FastAPI TestClient y persistencia en base de datos."),
         ("docker-compose.yml & Dockerfiles", "Archivos de orquestación Docker multi-stage para levantar backend FastAPI y frontend Nginx en contenedores aislados.")
@@ -209,7 +209,7 @@ def build_pdf():
 
     story.append(Spacer(1, 15))
     story.append(HRFlowable(width="100%", thickness=1, color=colors.HexColor('#cbd5e1'), spaceAfter=10))
-    story.append(Paragraph("<b>FraudGuard AI © 2026</b> — Documento generado automáticamente para soporte técnico y académico.", subtitle_style))
+    story.append(Paragraph("<b>FraudGuard © 2026</b> — Documento generado automáticamente para soporte técnico y académico.", subtitle_style))
 
     doc.build(story)
     print(f"[OK] Documento PDF generado exitosamente en: {pdf_filename}")
