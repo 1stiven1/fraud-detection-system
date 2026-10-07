@@ -1,6 +1,6 @@
-# FraudGuard AI — Sistema Web de Detección de Fraude en Transacciones Digitales
+# FraudGuard — Sistema Web de Detección de Fraude en Transacciones Digitales
 
-**FraudGuard AI** es un sistema web completo de Minería de Datos y Machine Learning en tiempo real diseñado para detectar, clasificar y explicar transacciones fraudulentas en pasarelas de pago digitales. 
+**FraudGuard** es un sistema web completo de Minería de Datos y Machine Learning en tiempo real diseñado para detectar, clasificar y explicar transacciones fraudulentas en pasarelas de pago digitales.
 
 El proyecto es **REAL y FUNCIONAL**, sin resultados simulados ni datos hardcodeados. Todas las predicciones, gráficos, métricas, matrices de confusión e inferencias proceden del procesamiento empírico de un dataset de más de 16,000 transacciones y la ejecución de modelos serializados con `scikit-learn`.
 
@@ -43,18 +43,17 @@ c:\Users\perez\OneDrive\Documents\ProyectoMineria/
 │   │   ├── raw/          # transactions_raw.csv (16,030 registros brutos)
 │   │   └── processed/    # transactions_processed.csv (15,995 depurados)
 │   ├── ml/
-│   │   ├── generate_data.py       # Generador estocástico con patrones estadísticos (Semilla 42)
-│   │   ├── preprocessing.py       # Pipeline de limpieza y calidad (Antes vs Después)
-│   │   ├── feature_engineering.py # Transformaciones y variables derivadas
-│   │   ├── train.py               # Entrenamiento 70/30 estratificado y selección técnica
-│   │   ├── evaluate.py            # Cálculo de Accuracy, Precision, Recall, F1, Confusion Matrix
-│   │   ├── predict.py             # Inferencia viva utilizando pipeline serializado
-│   │   ├── eda.py                 # Extracción automática de 5 hallazgos demostrados
-│   │   └── explain.py             # Explicabilidad dinámica en tiempo real
+│   │   ├── generar_datos.py        # Generador estocástico con patrones estadísticos (Semilla 42)
+│   │   ├── preprocesamiento.py     # Pipeline de limpieza y calidad (Antes vs Después)
+│   │   ├── ingenieria_caracteristicas.py # Transformaciones y variables derivadas
+│   │   ├── entrenar.py             # Entrenamiento y evaluación 70/30 estratificados
+│   │   ├── predecir.py             # Inferencia viva utilizando pipeline serializado
+│   │   ├── analisis_exploratorio.py # Extracción automática de 5 hallazgos demostrados
+│   │   └── explicacion.py          # Explicabilidad dinámica en tiempo real
 │   ├── artifacts/                 # Modelos serializados (.joblib) y JSONs de métricas
 │   ├── notebooks/
-│   │   ├── fraud_detection_analysis.ipynb # Notebook académico completo (16 secciones)
-│   │   └── generate_notebook.py
+│   │   ├── analisis_fraude.ipynb   # Notebook académico completo (16 secciones)
+│   │   └── generar_notebook.py
 │   ├── test_api.py       # Suite de pruebas de integración de endpoints
 │   ├── requirements.txt
 │   └── Dockerfile
@@ -154,4 +153,4 @@ Para realizar una prueba en vivo durante la sustentación:
 - `docs/metodologia.md`: Marco metodológico completo bajo el estándar CRISP-DM.
 - `docs/hallazgos.md`: Descripción detallada de los 5 hallazgos estadísticos demostrados con evidencia numérica real.
 - `docs/informe_tecnico.md`: Informe técnico definitivo de 16 secciones listo para la entrega académica.
-- `backend/notebooks/fraud_detection_analysis.ipynb`: Notebook Jupyter completamente ejecutable de principio a fin.
+- `backend/notebooks/analisis_fraude.ipynb`: Notebook Jupyter completamente ejecutable de principio a fin.

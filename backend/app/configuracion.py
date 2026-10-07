@@ -1,12 +1,12 @@
 """
-Configuración Centralizada de FraudGuard AI.
+Configuración Centralizada de FraudGuard.
 """
 
 import os
 from pydantic import BaseModel
 
 class ConfigSettings(BaseModel):
-    PROJECT_NAME: str = "FraudGuard AI"
+    PROJECT_NAME: str = "FraudGuard"
     VERSION: str = "1.0.0"
     API_PREFIX: str = "/api"
 

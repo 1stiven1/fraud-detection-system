@@ -1,4 +1,4 @@
-# FraudGuard AI — Backend (FastAPI & Machine Learning)
+# FraudGuard — Backend (FastAPI & Machine Learning)
 
 Microservicio backend desarrollado en Python 3.11+ para la detección de fraude en transacciones digitales.
 

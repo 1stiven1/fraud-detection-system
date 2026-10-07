@@ -1,12 +1,12 @@
 # INFORME TÉCNICO DE MINERÍA DE DATOS
-## Sistema Inteligente de Detección de Fraude en Transacciones Digitales — FraudGuard AI
+## Sistema Inteligente de Detección de Fraude en Transacciones Digitales — FraudGuard
 
 ---
 
 ### 1. Introducción
 El auge vertiginoso del comercio electrónico y los ecosistemas de pago digital ha transformado radicalmente la economía mundial. No obstante, este crecimiento ha estado acompañado de un incremento alarmante en técnicas sofisticadas de fraude financiero, suplantación de identidad y ataques automatizados contra pasarelas de pago.
 
-El presente informe documenta el desarrollo y despliegue del sistema **FraudGuard AI**, una plataforma integral de minería de datos y aprendizaje automático orientada a la interceptación en tiempo real de transacciones sospechosas, dotada de explicabilidad algorítmica y recomendaciones operativas transparentes.
+El presente informe documenta el desarrollo y despliegue del sistema **FraudGuard**, una plataforma integral de minería de datos y aprendizaje automático orientada a la interceptación en tiempo real de transacciones sospechosas, dotada de explicabilidad algorítmica y recomendaciones operativas transparentes.
 
 ---
 
@@ -57,7 +57,7 @@ Se implementó el marco metodológico estándar **CRISP-DM** (*Cross-Industry St
 ---
 
 ### 6. Limpieza y Calidad de Datos
-El pipeline ejecutado en `backend/ml/preprocessing.py` auditó y resolvió los defectos inyectados en la fase bruta:
+El pipeline ejecutado en `backend/ml/preprocesamiento.py` auditó y resolvió los defectos inyectados en la fase bruta:
 
 | Dimensión de Calidad | Antes (RAW) | Después (PROCESSED) | Solución Implementada |
 | :--- | :--- | :--- | :--- |

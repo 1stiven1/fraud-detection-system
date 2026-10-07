@@ -1,5 +1,5 @@
 """
-Punto de Entrada Principal de la API FraudGuard AI.
+Punto de Entrada Principal de la API FraudGuard.
 Desarrollado con FastAPI, persistencia PostgreSQL / SQLite y orquestación de Machine Learning.
 """
 
@@ -27,10 +27,10 @@ async def lifespan(app: FastAPI):
 
     yield
 
-    print("[*] Apagando servicio FraudGuard AI...")
+    print("[*] Apagando servicio FraudGuard...")
 
 app = FastAPI(
-    title="FraudGuard AI - API de Detección de Fraude",
+    title="FraudGuard - API de Detección de Fraude",
     description="Sistema web de Minería de Datos y Machine Learning para detección y prevención de fraude en transacciones digitales.",
     version=settings.VERSION,
     lifespan=lifespan
@@ -49,7 +49,7 @@ app.include_router(router, prefix=settings.API_PREFIX)
 @app.get("/")
 def root():
     return {
-        "service": "FraudGuard AI API",
+        "service": "FraudGuard API",
         "status": "online",
         "docs_url": "/docs",
         "version": settings.VERSION

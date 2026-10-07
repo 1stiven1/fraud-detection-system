@@ -36,11 +36,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentTab, setCurrentTab, sys
           <ShieldAlert className="w-6 h-6" />
         </div>
         <div>
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center">
             <span className="font-bold text-slate-900 tracking-tight text-lg">FraudGuard</span>
-            <span className="text-xs font-extrabold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600 border border-indigo-200">
-              AI
-            </span>
           </div>
           <p className="text-xs text-slate-400">Sistema Minería de Datos</p>
         </div>

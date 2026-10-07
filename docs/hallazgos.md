@@ -1,6 +1,6 @@
 # Evidencia y Hallazgos Estadísticos de Minería de Datos
 
-El sistema **FraudGuard AI** extrae automáticamente patrones de anomalía fundamentados en el análisis empírico de **15,995 transacciones procesadas**. A continuación se detalla la evidencia estadística y la interpretación de negocio de los 5 hallazgos principales.
+El sistema **FraudGuard** extrae automáticamente patrones de anomalía fundamentados en el análisis empírico de **15,995 transacciones procesadas**. A continuación se detalla la evidencia estadística y la interpretación de negocio de los 5 hallazgos principales.
 
 ---
 
