@@ -6,17 +6,11 @@ import {
   ArrowUpDown,
   Eye,
   X,
-  AlertTriangle,
-  Calendar,
-  CreditCard,
-  MapPin,
-  Clock,
-  Shield,
   HelpCircle
 } from 'lucide-react';
-import { fraudApi } from '../services/api';
-import { HistoryItem } from '../types';
-import { RiskBadge } from '../components/RiskBadge';
+import { fraudApi } from '../services/servicioApi';
+import { HistoryItem } from '../types/tipos';
+import { RiskBadge } from '../components/InsigniaRiesgo';
 
 export const HistoryPage: React.FC = () => {
   const [history, setHistory] = useState<HistoryItem[]>([]);
@@ -112,7 +106,7 @@ export const HistoryPage: React.FC = () => {
         {loading ? (
           <div className="p-12 text-center text-slate-400 text-xs flex flex-col items-center justify-center gap-2">
             <div className="w-8 h-8 border-3 border-indigo-600 border-t-transparent rounded-full animate-spin" />
-            <span>Consultando registros en SQLite...</span>
+            <span>Consultando registros en PostgreSQL...</span>
           </div>
         ) : history.length === 0 ? (
           <div className="p-12 text-center text-slate-500 flex flex-col items-center justify-center gap-2">

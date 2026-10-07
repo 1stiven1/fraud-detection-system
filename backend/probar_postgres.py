@@ -14,7 +14,6 @@ TARGET_DB = "fraudguard_db"
 def test_and_setup_postgres():
     print(f"[*] Probando conexión con servidor PostgreSQL en {DB_HOST}:{DB_PORT}...")
     try:
-        # 1. Conectar a la base de datos por defecto 'postgres'
         conn = psycopg2.connect(
             user=DB_USER,
             password=DB_PASS,
@@ -26,7 +25,6 @@ def test_and_setup_postgres():
         cursor = conn.cursor()
         print("    [OK] Conexión al servidor PostgreSQL exitosa con usuario 'postgres'.")
 
-        # 2. Verificar si la base de datos 'fraudguard_db' existe
         cursor.execute("SELECT 1 FROM pg_database WHERE datname = %s;", (TARGET_DB,))
         exists = cursor.fetchone()
 
@@ -40,7 +38,6 @@ def test_and_setup_postgres():
         cursor.close()
         conn.close()
 
-        # 3. Probar conexión directa a 'fraudguard_db'
         print(f"[*] Probando conexión directa a '{TARGET_DB}'...")
         conn_target = psycopg2.connect(
             user=DB_USER,

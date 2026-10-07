@@ -6,19 +6,16 @@ import {
   Sparkles,
   AlertOctagon,
   ShieldCheck,
-  AlertTriangle,
   HelpCircle,
   Clock,
   MapPin,
   Smartphone,
   CreditCard,
-  User,
-  History,
-  Info
+  History
 } from 'lucide-react';
-import { fraudApi } from '../services/api';
-import { TransactionInput, PredictionResponse } from '../types';
-import { RiskBadge } from '../components/RiskBadge';
+import { fraudApi } from '../services/servicioApi';
+import { TransactionInput, PredictionResponse } from '../types/tipos';
+import { RiskBadge } from '../components/InsigniaRiesgo';
 
 const HIGH_RISK_PRESET: TransactionInput = {
   transaction_id: 'TX_DEMO_ALTO_RIESGO',
@@ -93,7 +90,6 @@ export const AnalyzePage: React.FC = () => {
     try {
       const res = await fraudApi.predict(formData);
       setResult(res);
-      // Desplazamiento suave al resultado
       setTimeout(() => {
         const el = document.getElementById('prediction-result-card');
         if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -236,7 +232,7 @@ export const AnalyzePage: React.FC = () => {
                     className="w-full px-3.5 py-2 text-sm rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-hidden font-medium"
                   />
                   <p className="text-[11px] text-slate-400 mt-0.5">
-                    Ratio calculado: {(formData.amount / (formData.average_transaction_amount || 1)).toFixed(1)}x
+                    Ratio calculated: {(formData.amount / (formData.average_transaction_amount || 1)).toFixed(1)}x
                   </p>
                 </div>
               </div>

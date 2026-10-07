@@ -1,16 +1,12 @@
 """
-Módulo de Inferencia y Predicción de Fraude.
-Proyecto: FraudGuard AI
-
-Carga el pipeline serializado en backend/artifacts/models/fraud_model.joblib,
-aplica las transformaciones en memoria y calcula la probabilidad de fraude en tiempo real.
+Módulo de Inferencia y Predicción de Fraude (predecir.py).
 """
 
 import os
 import joblib
 import pandas as pd
 from typing import Dict, Any, Tuple
-from ml.feature_engineering import engineer_single_transaction
+from ml.ingenieria_caracteristicas import engineer_single_transaction
 
 _cached_model = None
 
@@ -45,15 +41,14 @@ def resolve_model_path(model_path: str = None) -> str:
         return os.path.abspath(model_path)
     possible_paths = [
         model_path,
-        os.path.join(os.path.dirname(__file__), "..", "artifacts", "models", "fraud_model.joblib"),
-        os.path.join(os.getcwd(), "artifacts", "models", "fraud_model.joblib"),
-        os.path.join(os.getcwd(), "backend", "artifacts", "models", "fraud_model.joblib")
+        os.path.join(os.path.dirname(__file__), "..", "artifacts", "models", "modelo_fraude.joblib"),
+        os.path.join(os.getcwd(), "artifacts", "models", "modelo_fraude.joblib"),
+        os.path.join(os.getcwd(), "backend", "artifacts", "models", "modelo_fraude.joblib")
     ]
     for p in possible_paths:
         if p and os.path.exists(p):
             return os.path.abspath(p)
-    # Ruta por defecto
-    return os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "artifacts", "models", "fraud_model.joblib"))
+    return os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "artifacts", "models", "modelo_fraude.joblib"))
 
 def load_fraud_model(model_path: str = None):
     """Carga y cachea el modelo de producción entrenado."""
@@ -63,7 +58,7 @@ def load_fraud_model(model_path: str = None):
         if not os.path.exists(target_path):
             raise FileNotFoundError(
                 f"El modelo no se encuentra en {target_path}. "
-                "Debe ejecutar el pipeline de entrenamiento primero (python -m ml.train)."
+                "Debe ejecutar el pipeline de entrenamiento primero (python -m ml.entrenar)."
             )
         _cached_model = joblib.load(target_path)
     return _cached_model
@@ -74,11 +69,8 @@ def predict_transaction(tx_data: Dict[str, Any], model_path: str = None) -> Tupl
     y retorna la probabilidad de fraude junto con las features calculadas.
     """
     model = load_fraud_model(model_path)
-
-    # 1. Feature Engineering en tiempo real
     engineered = engineer_single_transaction(tx_data)
 
-    # 2. Construir DataFrame con las columnas esperadas por el ColumnTransformer
     feature_cols = NUMERIC_FEATURES + CATEGORICAL_FEATURES
     row_dict = {}
 
@@ -91,7 +83,6 @@ def predict_transaction(tx_data: Dict[str, Any], model_path: str = None) -> Tupl
 
     df_row = pd.DataFrame(row_dict)[feature_cols]
 
-    # 3. Predicción con predict_proba
     probs = model.predict_proba(df_row)[0]
     fraud_prob = float(probs[1])
 

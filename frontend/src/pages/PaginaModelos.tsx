@@ -2,14 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Cpu,
   CheckCircle2,
-  AlertTriangle,
-  Award,
-  Layers,
-  ArrowRight,
-  TrendingUp,
-  BarChart2,
-  ShieldCheck,
-  Zap
+  BarChart2
 } from 'lucide-react';
 import {
   BarChart,
@@ -21,8 +14,8 @@ import {
   ResponsiveContainer,
   Legend
 } from 'recharts';
-import { fraudApi } from '../services/api';
-import { ModelComparisonData } from '../types';
+import { fraudApi } from '../services/servicioApi';
+import { ModelComparisonData } from '../types/tipos';
 
 export const ModelsPage: React.FC = () => {
   const [data, setData] = useState<{

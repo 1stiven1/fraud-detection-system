@@ -1,25 +1,21 @@
 """
-Módulo de Análisis Exploratorio de Datos (EDA) y Detección de Hallazgos Estadísticos.
-Proyecto: FraudGuard AI
-
-Calcula distribuciones agregadas y genera hallazgos empíricos estadísticamente fundamentados.
+Módulo de Análisis Exploratorio de Datos (analisis_exploratorio.py).
 """
 
 import os
 import json
 import numpy as np
 import pandas as pd
-from typing import Dict, Any, List
+from typing import Dict, Any
 
 def compute_eda_and_findings(
-    processed_path: str = "backend/data/processed/transactions_processed.csv",
-    output_distributions_path: str = "backend/artifacts/metrics/eda_distributions.json",
-    output_findings_path: str = "backend/artifacts/metrics/eda_findings.json"
+    processed_path: str = "backend/data/processed/transacciones_procesadas.csv",
+    output_distributions_path: str = "backend/artifacts/metrics/distribuciones_eda.json",
+    output_findings_path: str = "backend/artifacts/metrics/hallazgos_eda.json"
 ) -> Dict[str, Any]:
     print(f"[*] Analizando distribuciones y extrayendo hallazgos desde {processed_path}...")
     df = pd.read_csv(processed_path)
 
-    # Asegurar hora
     def extract_h(t):
         try:
             return int(str(t).split(":")[0])
@@ -33,15 +29,11 @@ def compute_eda_and_findings(
     total_fraud = int(df["is_fraud"].sum())
     base_fraud_rate = float(round((total_fraud / total_tx) * 100, 2))
 
-    # 1. DISTRIBUCIONES CLAVE
-
-    # A. Fraude vs No Fraude
     fraud_distribution = [
         {"name": "No Fraude (Legítimas)", "count": total_tx - total_fraud, "percentage": round(100 - base_fraud_rate, 2)},
         {"name": "Fraude Confirmado", "count": total_fraud, "percentage": base_fraud_rate}
     ]
 
-    # B. Fraudes por Hora
     hour_grouped = df.groupby("hour")["is_fraud"].agg(["count", "sum"]).reset_index()
     fraud_by_hour = []
     for _, row in hour_grouped.iterrows():
@@ -56,7 +48,6 @@ def compute_eda_and_findings(
             "fraud_rate": rate
         })
 
-    # C. Fraudes por Ciudad
     city_grouped = df.groupby("city")["is_fraud"].agg(["count", "sum"]).reset_index()
     fraud_by_city = []
     for _, row in city_grouped.iterrows():
@@ -71,7 +62,6 @@ def compute_eda_and_findings(
         })
     fraud_by_city.sort(key=lambda x: x["fraud_rate"], reverse=True)
 
-    # D. Fraudes por Categoría
     cat_grouped = df.groupby("merchant_category")["is_fraud"].agg(["count", "sum"]).reset_index()
     fraud_by_category = []
     for _, row in cat_grouped.iterrows():
@@ -86,7 +76,6 @@ def compute_eda_and_findings(
         })
     fraud_by_category.sort(key=lambda x: x["fraud_rate"], reverse=True)
 
-    # E. Fraudes por Método de Pago
     pay_grouped = df.groupby("payment_method")["is_fraud"].agg(["count", "sum"]).reset_index()
     fraud_by_payment = []
     for _, row in pay_grouped.iterrows():
@@ -101,7 +90,6 @@ def compute_eda_and_findings(
         })
     fraud_by_payment.sort(key=lambda x: x["fraud_rate"], reverse=True)
 
-    # F. Fraudes por Tipo de Dispositivo
     dev_grouped = df.groupby("device_type")["is_fraud"].agg(["count", "sum"]).reset_index()
     fraud_by_device = []
     for _, row in dev_grouped.iterrows():
@@ -116,7 +104,6 @@ def compute_eda_and_findings(
         })
     fraud_by_device.sort(key=lambda x: x["fraud_rate"], reverse=True)
 
-    # G. Distribución de montos (rangos)
     bins = [0, 50, 150, 300, 600, 1500, float("inf")]
     labels = ["$0 - $50", "$50 - $150", "$150 - $300", "$300 - $600", "$600 - $1,500", "> $1,500"]
     df["amount_bin"] = pd.cut(df["amount"], bins=bins, labels=labels, right=False)
@@ -133,7 +120,6 @@ def compute_eda_and_findings(
             "fraud_rate": rate
         })
 
-    # H. Relación Distancia vs Fraude (rangos)
     dist_bins = [0, 20, 50, 150, 300, float("inf")]
     dist_labels = ["0 - 20 km", "20 - 50 km", "50 - 150 km", "150 - 300 km", "> 300 km"]
     df["dist_bin"] = pd.cut(df["distance_from_usual_location"], bins=dist_bins, labels=dist_labels, right=False)
@@ -150,7 +136,6 @@ def compute_eda_and_findings(
             "fraud_rate": rate
         })
 
-    # I. Intentos fallidos vs Fraude
     fail_grouped = df.groupby("failed_attempts")["is_fraud"].agg(["count", "sum"]).reset_index()
     failed_distribution = []
     for _, row in fail_grouped.iterrows():
@@ -185,10 +170,8 @@ def compute_eda_and_findings(
         "failed_attempts_distribution": failed_distribution
     }
 
-    # 2. HALLAZGOS ESTADÍSTICOS AUTOMÁTICOS (MÍNIMO 5)
     findings = []
 
-    # Hallazgo 1: Horario nocturno / inusual
     night_mask = df["hour"].isin([0, 1, 2, 3, 4, 5])
     night_cnt = int(night_mask.sum())
     night_fraud = int(df.loc[night_mask, "is_fraud"].sum())
@@ -216,7 +199,6 @@ def compute_eda_and_findings(
         "interpretation": f"La tasa de fraude en la madrugada ({night_rate}%) es {ratio_night} veces superior a la diurna ({day_rate}%). Los actores maliciosos aprovechan las horas de menor supervisión del usuario y menor monitoreo personal para ejecutar cargos antes de que el titular despierte o note la alerta bancaria."
     })
 
-    # Hallazgo 2: Disparidad de Monto vs Promedio Histórico
     avg_col = df["average_transaction_amount"]
     ratio_monto = df["amount"] / (avg_col + 1e-5)
     high_ratio_mask = ratio_monto > 3.0
@@ -240,10 +222,9 @@ def compute_eda_and_findings(
             "risk_multiplier": f"{ratio_amt_mult}x",
             "high_ratio_transactions": hr_cnt
         },
-        "interpretation": f"Cuando el monto transado excede 3x el promedio histórico del cliente, la probabilidad de fraude salta al {hr_rate}%, frente a un mero {norm_ratio_rate}% en compras acordes a su perfil. Los defraudadores buscan monetizar o extraer el máximo saldo posible antes del bloqueo de la tarjeta."
+        "interpretation": f"Cuando el monto transado excede 3x el promedio histórico del cliente, la probabilidad de fraude salta al {hr_rate}%, frente a un mero {norm_ratio_rate}% en compras acordes a su perfil."
     })
 
-    # Hallazgo 3: Múltiples Intentos Rechazados Previos
     multi_fail_mask = df["failed_attempts"] >= 2
     mf_cnt = int(multi_fail_mask.sum())
     mf_fraud = int(df.loc[multi_fail_mask, "is_fraud"].sum())
@@ -266,10 +247,9 @@ def compute_eda_and_findings(
             "risk_multiplier": f"{fail_mult}x",
             "volume_reiterated_failures": mf_cnt
         },
-        "interpretation": f"Las transacciones precedidas de 2 o más intentos fallidos registran una tasa de fraude del {mf_rate}%, en contraste con el {zf_rate}% en operaciones sin fallas previas. Esto evidencia ataques de credential stuffing, prueba de CVV o intentos iterativos de bypass de pasarelas."
+        "interpretation": f"Las transacciones precedidas de 2 o más intentos fallidos registran una tasa de fraude del {mf_rate}%, en contraste con el {zf_rate}% en operaciones sin fallas previas."
     })
 
-    # Hallazgo 4: Anomalía Geoespacial y Distancia de Ubicación
     dist_high_mask = df["distance_from_usual_location"] > 100.0
     dh_cnt = int(dist_high_mask.sum())
     dh_fraud = int(df.loc[dist_high_mask, "is_fraud"].sum())
@@ -292,10 +272,9 @@ def compute_eda_and_findings(
             "risk_multiplier": f"{dist_mult}x",
             "anomalous_distance_tx_count": dh_cnt
         },
-        "interpretation": f"Las operaciones a más de 100 km registran una tasa de fraude de {dh_rate}%, frente al {dl_rate}% en radios locales. El fraude transfronterizo o el uso de credenciales robadas en otras regiones geográficas es un vector predominante de fraude digital."
+        "interpretation": f"Las operaciones a más de 100 km registran una tasa de fraude de {dh_rate}%, frente al {dl_rate}% en radios locales."
     })
 
-    # Hallazgo 5: Riesgo por Categorías de Alta Liquidez (Electrónica y Gambling)
     high_risk_cats = ["electronics", "gambling", "travel"]
     cat_mask = df["merchant_category"].isin(high_risk_cats)
     hrc_cnt = int(cat_mask.sum())
@@ -320,10 +299,9 @@ def compute_eda_and_findings(
             "risk_multiplier": f"{cat_mult}x",
             "volume_high_risk_sectors": hrc_cnt
         },
-        "interpretation": f"Las categorías de alta liquidez como Electrónica y Apuestas exhiben una tasa de fraude del {hrc_rate}%, comparado con el {lrc_rate}% en compras de supermercado y restaurantes. Los atacantes seleccionan bienes fácilmente convertibles en efectivo o reventa rápida en mercados secundarios."
+        "interpretation": f"Las categorías de alta liquidez como Electrónica y Apuestas exhiben una tasa de fraude del {hrc_rate}%, comparado con el {lrc_rate}% en compras cotidianas."
     })
 
-    # Guardar ambos archivos
     os.makedirs(os.path.dirname(output_distributions_path), exist_ok=True)
     with open(output_distributions_path, "w", encoding="utf-8") as f:
         json.dump(distributions_payload, f, indent=4, ensure_ascii=False)

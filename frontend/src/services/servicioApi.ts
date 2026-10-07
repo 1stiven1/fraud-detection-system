@@ -8,7 +8,7 @@ import {
   DataQualityReport,
   EDAData,
   FeatureImportanceData
-} from '../types';
+} from '../types/tipos';
 
 const api = axios.create({
   baseURL: '/api',

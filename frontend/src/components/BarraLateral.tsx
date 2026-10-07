@@ -103,7 +103,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentTab, setCurrentTab, sys
             <span className="text-slate-500 font-medium flex items-center gap-1.5">
               <Database className="w-3.5 h-3.5 text-slate-400" /> Base de Datos:
             </span>
-            <span className="text-slate-700 font-semibold">SQLite</span>
+            <span className="text-slate-700 font-semibold">PostgreSQL</span>
           </div>
 
           <div className="flex items-center justify-between text-xs">

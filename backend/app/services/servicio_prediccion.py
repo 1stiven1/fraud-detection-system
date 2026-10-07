@@ -1,6 +1,5 @@
 """
 Servicio Integrado de Predicción, Inferencia, Explicabilidad y Persistencia.
-Proyecto: FraudGuard AI
 """
 
 import uuid
@@ -8,14 +7,13 @@ from datetime import datetime
 from typing import Dict, Any
 from sqlalchemy.orm import Session
 
-from app.schemas.schemas import TransactionInput, PredictionResponse, RiskFactor
-from app.services.risk_service import evaluate_risk
-from app.models.db_models import PredictionRecord
-from ml.predict import predict_transaction, load_fraud_model
-from ml.explain import explain_transaction
+from app.schemas.esquemas import TransactionInput, PredictionResponse, RiskFactor
+from app.services.servicio_riesgo import evaluate_risk
+from app.models.modelos_db import PredictionRecord
+from ml.predecir import predict_transaction, load_fraud_model
+from ml.explicacion import explain_transaction
 
 def execute_prediction(input_data: TransactionInput, db: Session) -> PredictionResponse:
-    # 1. Asignar IDs y timestamps
     raw_dict = input_data.model_dump()
     tx_id = raw_dict.get("transaction_id")
     if not tx_id or tx_id.strip() == "":
@@ -25,13 +23,9 @@ def execute_prediction(input_data: TransactionInput, db: Session) -> PredictionR
     pred_id = f"PRED_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}_{uuid.uuid4().hex[:6].upper()}"
     now_iso = datetime.utcnow().isoformat()
 
-    # 2. Ejecutar inferencia a través del pipeline de ML
     prob, engineered_features = predict_transaction(raw_dict)
-
-    # 3. Clasificación de riesgo y recomendación operativa
     risk_info = evaluate_risk(prob)
 
-    # 4. Generación dinámica de factores explicativos
     model = load_fraud_model()
     raw_factors = explain_transaction(engineered_features, prob, model)
 
@@ -48,7 +42,6 @@ def execute_prediction(input_data: TransactionInput, db: Session) -> PredictionR
         for f in raw_factors
     ]
 
-    # 5. Persistencia en SQLite
     db_record = PredictionRecord(
         prediction_id=pred_id,
         timestamp=datetime.utcnow(),

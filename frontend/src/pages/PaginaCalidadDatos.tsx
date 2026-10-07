@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Database,
   CheckCircle2,
-  AlertTriangle,
-  ArrowRight,
   ShieldCheck,
-  Filter,
-  Layers,
-  Sparkles,
-  FileSpreadsheet,
-  Trash2
+  Sparkles
 } from 'lucide-react';
-import { fraudApi } from '../services/api';
-import { DataQualityReport } from '../types';
+import { fraudApi } from '../services/servicioApi';
+import { DataQualityReport } from '../types/tipos';
 
 export const DataQualityPage: React.FC = () => {
   const [data, setData] = useState<DataQualityReport | null>(null);
@@ -129,7 +122,7 @@ export const DataQualityPage: React.FC = () => {
               </span>
               <h3 className="text-base font-bold text-slate-900 mt-1">ANTES de la Limpieza (RAW)</h3>
             </div>
-            <span className="text-xs text-slate-400 font-mono">transactions_raw.csv</span>
+            <span className="text-xs text-slate-400 font-mono">transacciones_crudas.csv</span>
           </div>
 
           <div className="grid grid-cols-2 gap-3 text-xs">
@@ -170,7 +163,7 @@ export const DataQualityPage: React.FC = () => {
               </span>
               <h3 className="text-base font-bold text-slate-900 mt-1">DESPUÉS de la Limpieza (PROCESSED)</h3>
             </div>
-            <span className="text-xs text-slate-400 font-mono">transactions_processed.csv</span>
+            <span className="text-xs text-slate-400 font-mono">transacciones_procesadas.csv</span>
           </div>
 
           <div className="grid grid-cols-2 gap-3 text-xs">
@@ -244,7 +237,7 @@ export const DataQualityPage: React.FC = () => {
             <Sparkles className="w-4 h-4 text-indigo-600" /> Transformaciones Aplicadas en el Pipeline
           </h3>
           <p className="text-xs text-slate-500">
-            Secuencia algorítmica documentada en backend/ml/preprocessing.py
+            Secuencia algorítmica documentada en backend/ml/preprocesamiento.py
           </p>
         </div>
 

@@ -1,13 +1,9 @@
 """
 Servicio Centralizado de Evaluación de Riesgo y Asignación de Recomendaciones.
-Proyecto: FraudGuard AI
-
-Clasifica la probabilidad de fraude en niveles BAJO, MEDIO o ALTO
-y genera la recomendación operativa según los umbrales configurados.
 """
 
 from typing import Dict, Any
-from app.config import settings
+from app.configuracion import settings
 
 def evaluate_risk(probability: float) -> Dict[str, Any]:
     """

@@ -1,6 +1,6 @@
 """
 Punto de Entrada Principal de la API FraudGuard AI.
-Desarrollado con FastAPI, persistencia SQLite y orquestación de Machine Learning.
+Desarrollado con FastAPI, persistencia PostgreSQL / SQLite y orquestación de Machine Learning.
 """
 
 import os
@@ -8,18 +8,16 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.config import settings
-from app.database import engine, Base
-from app.models.db_models import PredictionRecord
-from app.api.routes import router
-from ml.predict import load_fraud_model
+from app.configuracion import settings
+from app.base_datos import engine, Base
+from app.models.modelos_db import PredictionRecord
+from app.api.rutas import router
+from ml.predecir import load_fraud_model
 
-# Asegurar creación de tablas en la base de datos SQLite
 Base.metadata.create_all(bind=engine)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Precarga del modelo en memoria para inferencia de baja latencia
     print("[*] Precargando modelo de Machine Learning en memoria...")
     try:
         load_fraud_model(settings.MODEL_PATH)
@@ -38,16 +36,14 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Configuración de CORS para desarrollo local y producción
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Permite cualquier origen en desarrollo
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Registro del enrutador bajo /api
 app.include_router(router, prefix=settings.API_PREFIX)
 
 @app.get("/")

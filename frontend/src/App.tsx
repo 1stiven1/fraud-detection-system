@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Sidebar } from './components/Sidebar';
-import { Header } from './components/Header';
-import { DashboardPage } from './pages/DashboardPage';
-import { AnalyzePage } from './pages/AnalyzePage';
-import { HistoryPage } from './pages/HistoryPage';
-import { ModelsPage } from './pages/ModelsPage';
-import { DataQualityPage } from './pages/DataQualityPage';
-import { ExplorationPage } from './pages/ExplorationPage';
-import { FeaturesPage } from './pages/FeaturesPage';
-import { fraudApi } from './services/api';
+import { Sidebar } from './components/BarraLateral';
+import { Header } from './components/Encabezado';
+import { DashboardPage } from './pages/PaginaDashboard';
+import { AnalyzePage } from './pages/PaginaAnalizar';
+import { HistoryPage } from './pages/PaginaHistorial';
+import { ModelsPage } from './pages/PaginaModelos';
+import { DataQualityPage } from './pages/PaginaCalidadDatos';
+import { ExplorationPage } from './pages/PaginaExploracion';
+import { FeaturesPage } from './pages/PaginaVariables';
+import { fraudApi } from './services/servicioApi';
 
 export function App() {
   const [currentTab, setCurrentTab] = useState<string>('dashboard');

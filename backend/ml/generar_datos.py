@@ -1,10 +1,5 @@
 """
 Generador de Dataset Sintético Realista para Detección de Fraude en Transacciones.
-Proyecto: FraudGuard AI
-Autor: Equipo de Minería de Datos
-
-Genera mínimo 15,000 registros con patrones estadísticos realistas de fraude,
-incluyendo ruido estocástico y anomalías de calidad para la etapa de limpieza.
 """
 
 import os
@@ -16,7 +11,7 @@ from datetime import datetime, timedelta
 def generate_fraud_dataset(
     n_samples: int = 16000,
     random_seed: int = 42,
-    output_raw_path: str = "backend/data/raw/transactions_raw.csv"
+    output_raw_path: str = "backend/data/raw/transacciones_crudas.csv"
 ) -> pd.DataFrame:
     np.random.seed(random_seed)
     random.seed(random_seed)
@@ -29,7 +24,6 @@ def generate_fraud_dataset(
     payment_methods = ["credit_card", "debit_card", "bank_transfer", "virtual_wallet", "crypto"]
     device_types = ["mobile_android", "mobile_ios", "web_chrome", "web_safari", "unknown"]
 
-    # Generación de perfiles base de clientes (simulando 2500 clientes únicos)
     n_customers = 2500
     customer_ids = [f"CUST_{i:05d}" for i in range(1, n_customers + 1)]
     customer_profiles = {}
@@ -57,16 +51,13 @@ def generate_fraud_dataset(
         cid = np.random.choice(customer_ids)
         profile = customer_profiles[cid]
 
-        # Fecha y hora dentro de un rango de 60 días
         days_offset = random.randint(0, 60)
-        # Horas con pico diurno y menor frecuencia nocturna
         hour_sample = int(np.clip(np.random.normal(14, 5), 0, 23))
         minute_sample = random.randint(0, 59)
         second_sample = random.randint(0, 59)
         tx_date = (base_date + timedelta(days=days_offset)).strftime("%Y-%m-%d")
         tx_time = f"{hour_sample:02d}:{minute_sample:02d}:{second_sample:02d}"
 
-        # Ciudad y distancia
         is_diff_city = np.random.rand() < 0.12
         if is_diff_city:
             city = random.choice([c for c in cities if c != profile["usual_city"]])
@@ -75,34 +66,24 @@ def generate_fraud_dataset(
             city = profile["usual_city"]
             distance = float(np.round(np.random.exponential(scale=8.0), 2))
 
-        # Dispositivo
         is_diff_device = np.random.rand() < 0.15
         if is_diff_device:
             device = random.choice(device_types)
         else:
             device = profile["pref_device"]
 
-        # Categoría y método de pago
         category = np.random.choice(categories, p=[0.25, 0.15, 0.08, 0.22, 0.10, 0.12, 0.06, 0.02])
         payment_method = profile["pref_payment"] if np.random.rand() > 0.18 else random.choice(payment_methods)
 
-        # Monto con distribución sesgada hacia la derecha
-        # Ocasionalmente compras grandes
         amount_multiplier = np.random.lognormal(mean=0.0, sigma=0.6)
         amount = float(np.round(profile["avg_amount"] * amount_multiplier, 2))
         amount = max(5.0, amount)
 
-        # Transacciones recientes en última hora y frecuencia
         recent_txs = int(np.random.poisson(lam=1.2))
         tx_frequency = float(np.round(np.clip(np.random.normal(2.5, 1.2), 0.5, 12.0), 2))
         failed_attempts = int(np.random.choice([0, 1, 2, 3, 4], p=[0.82, 0.11, 0.04, 0.02, 0.01]))
 
-        # CÁLCULO DE PROBABILIDAD DE FRAUDE BASADA EN LÓGICA DE NEGOCIO REALISTA CON RUIDO
-        # Ponderación basada en factores de riesgo
-        risk_score = -4.5  # Sesgo base para tasa de fraude ~5-7%
-
-        # Factores
-        # 1. Monto elevado vs promedio habitual
+        risk_score = -4.5
         ratio_amount = amount / (profile["avg_amount"] + 1e-5)
         if ratio_amount > 4.0:
             risk_score += 2.2
@@ -111,49 +92,39 @@ def generate_fraud_dataset(
         elif ratio_amount > 1.8:
             risk_score += 0.6
 
-        # 2. Horario inusual (madrugada: 00:00 a 05:59)
         if hour_sample in [0, 1, 2, 3, 4, 5]:
             risk_score += 1.4
 
-        # 3. Ubicación anómala y distancia
         if is_diff_city and distance > 250:
             risk_score += 1.8
         elif distance > 100:
             risk_score += 0.9
 
-        # 4. Intentos fallidos
         if failed_attempts >= 3:
             risk_score += 2.5
         elif failed_attempts >= 1:
             risk_score += 1.0 * failed_attempts
 
-        # 5. Ráfaga de transacciones recientes
         if recent_txs >= 4:
             risk_score += 1.7
         elif recent_txs >= 2:
             risk_score += 0.7
 
-        # 6. Cuenta nueva (menor a 30 días)
         if profile["account_age"] < 30:
             risk_score += 1.1
 
-        # 7. Dispositivo nuevo o desconocido
         if device == "unknown":
             risk_score += 1.2
         elif is_diff_device:
             risk_score += 0.8
 
-        # 8. Categorías de alto riesgo (electrónica, joyería, gambling, crypto)
         if category in ["electronics", "gambling", "travel"]:
             risk_score += 0.7
         if payment_method == "crypto":
             risk_score += 1.1
 
-        # Ruido estocástico para hacer que sea un problema genuino de ML
         noise = np.random.normal(0, 0.85)
         latent_prob = 1.0 / (1.0 + np.exp(-(risk_score + noise)))
-
-        # Clasificación estocástica
         is_fraud = 1 if np.random.rand() < latent_prob else 0
 
         record = {
@@ -180,35 +151,25 @@ def generate_fraud_dataset(
 
     df = pd.DataFrame(records)
 
-    # Inyección de problemas de calidad de datos en el dataset crudo (RAW)
-    # para demostrar la efectividad de la etapa de limpieza en el informe y UI:
-    # 1. Valores nulos en device_type (~1.2%) y city (~0.8%)
+    # Inyección de anomalías
     null_idx_device = np.random.choice(df.index, size=int(len(df) * 0.012), replace=False)
     df.loc[null_idx_device, "device_type"] = None
     null_idx_city = np.random.choice(df.index, size=int(len(df) * 0.008), replace=False)
     df.loc[null_idx_city, "city"] = None
 
-    # 2. Duplicados artificiales (30 filas duplicadas)
     dup_rows = df.iloc[:30].copy()
     df = pd.concat([df, dup_rows], ignore_index=True)
 
-    # 3. Valores inconsistentes o imposibles de monto (-150.0, 0.0) en 5 registros
     err_idx = np.random.choice(df.index, size=6, replace=False)
     df.loc[err_idx[:3], "amount"] = -50.0
     df.loc[err_idx[3:], "amount"] = 0.0
 
-    # 4. Formatos de texto inconsistentes (mayúsculas accidentales en 20 registros)
     text_idx = np.random.choice(df.index, size=20, replace=False)
     df.loc[text_idx, "merchant_category"] = df.loc[text_idx, "merchant_category"].str.upper()
 
     os.makedirs(os.path.dirname(output_raw_path), exist_ok=True)
     df.to_csv(output_raw_path, index=False)
-    fraud_rate = (df['is_fraud'].sum() / len(df)) * 100
     print(f"[OK] Dataset RAW generado exitosamente en {output_raw_path}")
-    print(f"Total registros: {len(df):,}")
-    print(f"Tasa de fraude bruta: {fraud_rate:.2f}%")
-    print(f"Columnas: {list(df.columns)}")
-
     return df
 
 if __name__ == "__main__":

@@ -1,11 +1,11 @@
 """
 Módulo de Base de Datos y Sesiones SQLAlchemy.
-Persistencia en SQLite con preparación para migración a PostgreSQL.
+Persistencia relacional en PostgreSQL / SQLite.
 """
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
-from app.config import settings
+from app.configuracion import settings
 
 # Para SQLite necesitamos check_same_thread=False
 connect_args = {"check_same_thread": False} if "sqlite" in settings.DATABASE_URL else {}

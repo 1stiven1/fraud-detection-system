@@ -4,15 +4,9 @@ import {
   TrendingUp,
   Clock,
   MapPin,
-  ShoppingBag,
-  CreditCard,
-  Smartphone,
-  ShieldAlert,
-  HelpCircle,
   Lightbulb,
   CheckCircle2,
-  AlertOctagon,
-  Percent
+  AlertOctagon
 } from 'lucide-react';
 import {
   BarChart,
@@ -21,14 +15,10 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  Legend
+  ResponsiveContainer
 } from 'recharts';
-import { fraudApi } from '../services/api';
-import { EDAData } from '../types';
+import { fraudApi } from '../services/servicioApi';
+import { EDAData } from '../types/tipos';
 
 export const ExplorationPage: React.FC = () => {
   const [data, setData] = useState<EDAData | null>(null);

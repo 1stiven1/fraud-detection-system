@@ -1,7 +1,5 @@
 """
 Rutas API REST de FastAPI para FraudGuard AI.
-Expone todos los endpoints requeridos para el dashboard, inferencia, calidad de datos,
-EDA, explicabilidad y gestión de modelos.
 """
 
 import os
@@ -12,20 +10,19 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 from sqlalchemy import desc, asc
 
-from app.database import get_db
-from app.config import settings
-from app.schemas.schemas import (
+from app.base_datos import get_db
+from app.configuracion import settings
+from app.schemas.esquemas import (
     TransactionInput, PredictionResponse, HistoryItemResponse,
     ModelComparisonResponse
 )
-from app.services.prediction_service import execute_prediction
-from app.models.db_models import PredictionRecord
-from ml.predict import load_fraud_model
+from app.services.servicio_prediccion import execute_prediction
+from app.models.modelos_db import PredictionRecord
+from ml.predecir import load_fraud_model
 import pandas as pd
 
 router = APIRouter()
 
-# Helper para cargar JSONs de artefactos de manera segura
 def read_json_artifact(filename: str) -> Dict[str, Any]:
     filepath = os.path.join(settings.ARTIFACTS_DIR, "metrics", filename)
     if not os.path.exists(filepath):
@@ -36,7 +33,6 @@ def read_json_artifact(filename: str) -> Dict[str, Any]:
     with open(filepath, "r", encoding="utf-8") as f:
         return json.load(f)
 
-# 1. HEALTH CHECK
 @router.get("/health", tags=["Sistema"])
 def health_check():
     model_loaded = False
@@ -54,31 +50,26 @@ def health_check():
         "model_loaded": model_loaded
     }
 
-# 2. DASHBOARD RESUMEN
 @router.get("/dashboard", tags=["Dashboard"])
 def get_dashboard_summary(db: Session = Depends(get_db)):
-    eda_dist = read_json_artifact("eda_distributions.json")
-    eda_findings = read_json_artifact("eda_findings.json")
-    model_comp = read_json_artifact("model_comparison.json")
-    conf_mat = read_json_artifact("confusion_matrix.json")
-    feat_imp = read_json_artifact("feature_importance.json")
+    eda_dist = read_json_artifact("distribuciones_eda.json")
+    eda_findings = read_json_artifact("hallazgos_eda.json")
+    model_comp = read_json_artifact("comparacion_modelos.json")
+    conf_mat = read_json_artifact("matriz_confusion.json")
+    feat_imp = read_json_artifact("importancia_variables.json")
 
-    # Contar predicciones en vivo guardadas en la base de datos
     live_count = db.query(PredictionRecord).count()
     live_high_risk = db.query(PredictionRecord).filter(PredictionRecord.risk_level == "ALTO").count()
     live_medium_risk = db.query(PredictionRecord).filter(PredictionRecord.risk_level == "MEDIO").count()
 
-    # Totales consolidados (dataset histórico + predicciones en vivo)
     summary = eda_dist.get("summary", {})
     total_tx = summary.get("total_transactions", 0) + live_count
     total_fraud = summary.get("total_fraud", 0) + live_high_risk
     suspicious_count = total_fraud + live_medium_risk
 
-    # Valor monetario sospechoso aproximado
     avg_amt = summary.get("average_amount", 145.0)
     suspicious_amount = round(suspicious_count * avg_amt * 2.8, 2)
 
-    # Buscar modelo seleccionado
     selected_name = model_comp.get("selected_model", "Random Forest")
     selected_metrics = next(
         (m for m in model_comp.get("models", []) if m["model_name"] == selected_name),
@@ -119,7 +110,6 @@ def get_dashboard_summary(db: Session = Depends(get_db)):
         "confusion_matrix": conf_mat.get(selected_name, {})
     }
 
-# 3. PREDICCIÓN EN TIEMPO REAL
 @router.post("/predict", response_model=PredictionResponse, tags=["Inferencia"])
 def predict(input_data: TransactionInput, db: Session = Depends(get_db)):
     try:
@@ -130,7 +120,6 @@ def predict(input_data: TransactionInput, db: Session = Depends(get_db)):
             detail=f"Error durante el proceso de inferencia: {str(e)}"
         )
 
-# 4. HISTORIAL DE PREDICCIONES
 @router.get("/history", response_model=List[HistoryItemResponse], tags=["Historial"])
 def get_prediction_history(
     search: Optional[str] = Query(None, description="Buscar por ID de transacción o predicción"),
@@ -154,7 +143,6 @@ def get_prediction_history(
     if risk_level and risk_level.upper() in ["BAJO", "MEDIO", "ALTO"]:
         query = query.filter(PredictionRecord.risk_level == risk_level.upper())
 
-    # Ordenamiento
     sort_col = getattr(PredictionRecord, sort_by, PredictionRecord.timestamp)
     if order.lower() == "asc":
         query = query.order_by(asc(sort_col))
@@ -183,7 +171,6 @@ def get_prediction_history(
         ))
     return items
 
-# 5. DETALLE DE PREDICCIÓN POR ID
 @router.get("/history/{prediction_id}", response_model=HistoryItemResponse, tags=["Historial"])
 def get_prediction_detail(prediction_id: str, db: Session = Depends(get_db)):
     r = db.query(PredictionRecord).filter(PredictionRecord.prediction_id == prediction_id).first()
@@ -206,46 +193,40 @@ def get_prediction_detail(prediction_id: str, db: Session = Depends(get_db)):
         risk_factors=r.risk_factors
     )
 
-# 6. MÉTRICAS Y COMPARACIÓN DE MODELOS
 @router.get("/metrics", response_model=ModelComparisonResponse, tags=["Modelos"])
 def get_metrics():
-    return read_json_artifact("model_comparison.json")
+    return read_json_artifact("comparacion_modelos.json")
 
 @router.get("/models", tags=["Modelos"])
 def get_models_info():
-    comparison = read_json_artifact("model_comparison.json")
-    conf_matrix = read_json_artifact("confusion_matrix.json")
+    comparison = read_json_artifact("comparacion_modelos.json")
+    conf_matrix = read_json_artifact("matriz_confusion.json")
     return {
         "comparison": comparison,
         "confusion_matrices": conf_matrix
     }
 
-# 7. IMPORTANCIA DE VARIABLES
 @router.get("/feature-importance", tags=["Modelos"])
 def get_feature_importance():
-    return read_json_artifact("feature_importance.json")
+    return read_json_artifact("importancia_variables.json")
 
-# 8. MATRICES DE CONFUSIÓN
 @router.get("/confusion-matrix", tags=["Modelos"])
 def get_confusion_matrix():
-    return read_json_artifact("confusion_matrix.json")
+    return read_json_artifact("matriz_confusion.json")
 
-# 9. EDA Y HALLAZGOS ESTADÍSTICOS
 @router.get("/eda", tags=["Exploración"])
 def get_eda_data():
-    dist = read_json_artifact("eda_distributions.json")
-    findings = read_json_artifact("eda_findings.json")
+    dist = read_json_artifact("distribuciones_eda.json")
+    findings = read_json_artifact("hallazgos_eda.json")
     return {
         "distributions": dist,
         "findings": findings.get("findings", [])
     }
 
-# 10. CALIDAD DE DATOS (ANTES Y DESPUÉS)
 @router.get("/data-quality", tags=["Datos"])
 def get_data_quality():
-    return read_json_artifact("data_quality.json")
+    return read_json_artifact("calidad_datos.json")
 
-# 11. TRANSACCIONES DEL DATASET (PARA PRUEBAS Y MUESTRAS)
 @router.get("/transactions", tags=["Datos"])
 def get_sample_transactions(
     limit: int = Query(20, ge=1, le=100),
@@ -269,30 +250,27 @@ def get_transaction_by_id(transaction_id: str):
         raise HTTPException(status_code=404, detail="Transacción no encontrada")
     return match.iloc[0].to_dict()
 
-# 12. ENDPOINT PARA RE-ENTRENAR MODELOS
 @router.post("/train", tags=["Modelos"])
 def trigger_training():
     try:
-        from ml.preprocessing import run_data_cleaning_pipeline
-        from ml.train import train_and_evaluate_models
-        from ml.eda import compute_eda_and_findings
+        from ml.preprocesamiento import run_data_cleaning_pipeline
+        from ml.entrenar import train_and_evaluate_models
+        from ml.analisis_exploratorio import compute_eda_and_findings
 
-        # Ejecutar pipeline
         run_data_cleaning_pipeline(
             settings.RAW_DATA_PATH,
             settings.PROCESSED_DATA_PATH,
-            os.path.join(settings.ARTIFACTS_DIR, "metrics", "data_quality.json")
+            os.path.join(settings.ARTIFACTS_DIR, "metrics", "calidad_datos.json")
         )
         compute_eda_and_findings(
             settings.PROCESSED_DATA_PATH,
-            os.path.join(settings.ARTIFACTS_DIR, "metrics", "eda_distributions.json"),
-            os.path.join(settings.ARTIFACTS_DIR, "metrics", "eda_findings.json")
+            os.path.join(settings.ARTIFACTS_DIR, "metrics", "distribuciones_eda.json"),
+            os.path.join(settings.ARTIFACTS_DIR, "metrics", "hallazgos_eda.json")
         )
         comparison = train_and_evaluate_models(
             settings.PROCESSED_DATA_PATH,
             settings.ARTIFACTS_DIR
         )
-        # Recargar modelo
         load_fraud_model()
         return {
             "status": "success",

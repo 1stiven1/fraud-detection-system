@@ -1,0 +1,71 @@
+{
+    "findings": [
+        {
+            "id": 1,
+            "title": "Vulnerabilidad Temporal: Disparo del Fraude en Madrugadas",
+            "description": "Las transacciones ejecutadas en horario nocturno (00:00 a 05:59) experimentan un incremento drástico en la tasa de fraude en comparación con el horario diurno.",
+            "evidence": {
+                "fraud_rate_unusual_hour": 21.82,
+                "fraud_rate_normal_hour": 7.39,
+                "difference_points": 14.43,
+                "risk_multiplier": "2.95x",
+                "sample_size_night": 903,
+                "sample_size_day": 15092
+            },
+            "interpretation": "La tasa de fraude en la madrugada (21.82%) es 2.95 veces superior a la diurna (7.39%). Los actores maliciosos aprovechan las horas de menor supervisión del usuario y menor monitoreo personal para ejecutar cargos antes de que el titular despierte o note la alerta bancaria."
+        },
+        {
+            "id": 2,
+            "title": "Monto Anómalo: Multiplicador Crítico sobre el Gasto Histórico",
+            "description": "Las operaciones cuyo importe supera 3 veces el promedio habitual del cliente presentan la mayor correlación con incidentes de fraude.",
+            "evidence": {
+                "fraud_rate_above_3x_avg": 22.52,
+                "fraud_rate_normal_avg": 7.75,
+                "difference_points": 14.77,
+                "risk_multiplier": "2.91x",
+                "high_ratio_transactions": 493
+            },
+            "interpretation": "Cuando el monto transado excede 3x el promedio histórico del cliente, la probabilidad de fraude salta al 22.52%, frente a un mero 7.75% en compras acordes a su perfil."
+        },
+        {
+            "id": 3,
+            "title": "Ataques de Fuerza Bruta: Impacto de Intentos Fallidos Consecutivos",
+            "description": "Dos o más intentos fallidos previos representan un indicador contundente de prueba de credenciales o ataque automatizado.",
+            "evidence": {
+                "fraud_rate_failed_attempts_gte_2": 28.55,
+                "fraud_rate_zero_failures": 5.82,
+                "difference_points": 22.73,
+                "risk_multiplier": "4.91x",
+                "volume_reiterated_failures": 1121
+            },
+            "interpretation": "Las transacciones precedidas de 2 o más intentos fallidos registran una tasa de fraude del 28.55%, en contraste con el 5.82% en operaciones sin fallas previas."
+        },
+        {
+            "id": 4,
+            "title": "Ruptura de Patrón Geográfico: Distancia Mayor a 100 km",
+            "description": "Las transacciones ejecutadas a más de 100 km de la ubicación habitual del cliente presentan un riesgo significativamente mayor de fraude.",
+            "evidence": {
+                "fraud_rate_dist_gt_100km": 19.78,
+                "fraud_rate_dist_lte_50km": 6.66,
+                "difference_points": 13.12,
+                "risk_multiplier": "2.97x",
+                "anomalous_distance_tx_count": 1886
+            },
+            "interpretation": "Las operaciones a más de 100 km registran una tasa de fraude de 19.78%, frente al 6.66% en radios locales."
+        },
+        {
+            "id": 5,
+            "title": "Segmentación Sectorial: Categorías de Comercio de Alta Reventa",
+            "description": "Comercios de electrónica, viajes y apuestas concentran proporcionalmente más transacciones fraudulentas que bienes cotidianos.",
+            "evidence": {
+                "fraud_rate_high_risk_sectors": 11.63,
+                "fraud_rate_everyday_sectors": 7.05,
+                "difference_points": 4.58,
+                "risk_multiplier": "1.65x",
+                "volume_high_risk_sectors": 4040
+            },
+            "interpretation": "Las categorías de alta liquidez como Electrónica y Apuestas exhiben una tasa de fraude del 11.63%, comparado con el 7.05% en compras cotidianas."
+        }
+    ],
+    "base_fraud_rate": 8.2
+}

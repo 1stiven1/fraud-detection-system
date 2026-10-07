@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { RefreshCw, Play, Sparkles } from 'lucide-react';
-import { fraudApi } from '../services/api';
+import { fraudApi } from '../services/servicioApi';
 
 interface HeaderProps {
   currentTab: string;
@@ -22,7 +22,7 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, onRefreshData }) => 
     },
     history: {
       title: 'Historial de Auditoría Transaccional',
-      subtitle: 'Registro persistente en SQLite de todas las operaciones evaluadas con desglose pericial.',
+      subtitle: 'Registro persistente en PostgreSQL de todas las operaciones evaluadas con desglose pericial.',
     },
     models: {
       title: 'Modelos de Machine Learning',
@@ -58,7 +58,7 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, onRefreshData }) => 
       setRetrainSuccess(true);
       setTimeout(() => setRetrainSuccess(false), 4000);
       if (onRefreshData) onRefreshData();
-    } catch (err) {
+    } catch {
       alert('Error durante el re-entrenamiento. Verifique la consola del servidor.');
     } finally {
       setRetraining(false);

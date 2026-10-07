@@ -6,12 +6,10 @@ import {
   DollarSign,
   TrendingUp,
   Cpu,
-  ArrowUpRight,
   Layers,
   Clock,
   MapPin,
-  ShoppingBag,
-  Info
+  ShoppingBag
 } from 'lucide-react';
 import {
   BarChart,
@@ -26,9 +24,8 @@ import {
   Cell,
   Legend
 } from 'recharts';
-import { fraudApi } from '../services/api';
-import { DashboardData } from '../types';
-import { RiskBadge } from '../components/RiskBadge';
+import { fraudApi } from '../services/servicioApi';
+import { DashboardData } from '../types/tipos';
 
 export const DashboardPage: React.FC = () => {
   const [data, setData] = useState<DashboardData | null>(null);

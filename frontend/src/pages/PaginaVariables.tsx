@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Sliders,
-  Cpu,
-  TrendingUp,
-  HelpCircle,
-  CheckCircle2,
-  Sparkles,
-  BarChart2,
-  Info
+  BarChart2
 } from 'lucide-react';
 import {
   BarChart,
@@ -18,8 +12,8 @@ import {
   Tooltip,
   ResponsiveContainer
 } from 'recharts';
-import { fraudApi } from '../services/api';
-import { FeatureImportanceData } from '../types';
+import { fraudApi } from '../services/servicioApi';
+import { FeatureImportanceData } from '../types/tipos';
 
 export const FeaturesPage: React.FC = () => {
   const [data, setData] = useState<FeatureImportanceData | null>(null);

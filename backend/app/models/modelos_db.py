@@ -1,10 +1,10 @@
 """
-Modelos ORM de Base de Datos SQLAlchemy.
+Modelos ORM de Base de Datos SQLAlchemy en Español.
 """
 
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, Float, DateTime, Text, JSON
-from app.database import Base
+from app.base_datos import Base
 
 class PredictionRecord(Base):
     __tablename__ = "predictions"
